@@ -24,12 +24,15 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get('/api/2023-12-03', function (req, res) {
-  const date = new Date('2023-12-03')
-  const unixTime = Math.floor(date.getTime() / 1000)
-  const utcTime = new Date(Date.UTC(2023, 11, 3, 12, 25, 0))
+app.get('/api/:date?', function(req, res) {
+  const reqDate = req.params.date;
+  const date = reqDate === undefined ? new Date() : isNaN(Number(reqDate)) ? new Date(reqDate) : new Date(Number(reqDate))
+  const utc = new Date(date).toUTCString();
+  const unix = Number(date)
 
-  res.json({ 'unix': unixTime, 'utc': utcTime })
+  console.log(isNaN(Number(reqDate)))
+
+  res.json(unix === 'Invalid Date' || utc === 'Invalid Date' ? { 'error': 'Invalid Date' } : { 'unix': unix, 'utc': utc })
 })
 
 // listen for requests :)
