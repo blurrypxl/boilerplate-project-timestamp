@@ -25,8 +25,11 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api/2023-12-03', function (req, res) {
-  const date = new Date()
-  res.json(date)
+  const date = new Date('2023-12-03')
+  const unixTime = Math.floor(date.getTime() / 1000)
+  const utcTime = new Date(Date.UTC(2023, 11, 3, 12, 25, 0))
+
+  res.json({ 'unix': unixTime, 'utc': utcTime })
 })
 
 // listen for requests :)
